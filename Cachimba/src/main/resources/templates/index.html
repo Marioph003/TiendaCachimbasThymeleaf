@@ -41,56 +41,77 @@
 						data-toggle="dropdown" role="button" aria-haspopup="true"
 						aria-expanded="false">Opciones <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="/admin/complemento/"
+							<li><a href="admin/list-complemento.html"
 								th:href="@{/admin/complemento/}">Gestión de complementos</a></li>
-							<li><a href="/admin/cachimba/" th:href="@{/admin/cachimba/}">Gestión
-									de cachimbas</a></li>
+							<li><a href="admin/list-cachimba.html"
+								th:href="@{/admin/cachimba/}">Gestión de cachimbas</a></li>
 						</ul></li>
 				</ul>				
 			</div>
-
 		</div>
 	</nav>
 
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-offset-2 col-md-8">
-				<form method="post" action="#"
-					th:action="@{/admin/complemento/nueva/submit}"
-					th:object="${complemento}">
-					<h1>
-						<span th:text="${complemento.id} ? 'Editar' : 'Nueva'"></span>
-						complemento
-					</h1>
-					<input type="hidden" th:field="*{id}" id="id" />
-					<div class="form-group">
-						<label class="control-label" for="nombre">Nombre</label> <input type="text"
-							class="form-control" id="nombre" placeholder="Nombre"
-							required="required" th:field="*{nombre}">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<h3>Complementos</h3>
+				<ul class="nav nav-sidebar">
+					<li th:each="categoria : ${categorias}">
+					<a href="#"
+						th:href="@{/(idCategoria=${categoria.id})}"
+						th:text="${categoria.nombre}">complemento</a></li>
+				</ul>
+			</div>
+
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<h1>Fumarola Shop</h1>
+				<div class="row">
+					<div class="col-sm-3" th:each="cachimba : ${cachimbas}">						
+						<a href="#" th:href="@{/cachimba/{id}(id=${cachimba.id})}">
+							<div class="col-item">
+								<div class="photo">
+									<img src="http://placehold.it/350x260"
+										th:src="${#strings.isEmpty(cachimba.imagen)} ? 'http://placehold.it/350x260' : ${cachimba.imagen}"
+										class="img-responsive" alt="a" />
+								</div>
+								<div class="info">
+									<div class="row">
+										<div class="price col-md-12">
+											<h5 th:text="${#strings.abbreviate(cachimba.nombre,65)}">Nombre</h5>
+											<div class="price-text-color">
+													<span class="price-original"
+														th:text="${#numbers.formatCurrency(cachimba.precio)}">12,00€</span>
+												</th:block>
+											</div>
+										</div>
+										<div class="row">
+											<div class="rating col-md-4">
+												<p>
+													<span
+														th:text="${#numbers.formatDecimal(producto.getPuntuacionMedia(),1,1)}">4</span>/5
+												</p>
+											</div>
+											<div class="rating col-md-8">
+												<span class="glyphicon glyphicon-star"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</a>
 					</div>
-					<div class="form-group">
-						<label class="control-label" for="imagen">URL de la imagen</label> <input type="url"
-							class="form-control" id="imagen" placeholder="http://..."
-							th:field="*{imagen}">
-					</div>
-					<div class="form-group">
-						<label class="control-label" for="stock"> <input type="checkbox"
-							id="stock" value="true" th:field="*{stock}"> Es
-							stock
-						</label>
-					</div>
-					<button type="submit" class="btn btn-default">Enviar</button>
-				</form>
+				</div>
+
 			</div>
 		</div>
+
 	</div>
+
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	
-
 </body>
 </html>

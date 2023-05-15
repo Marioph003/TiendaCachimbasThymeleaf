@@ -7,6 +7,7 @@
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <title></title>
 
+
 <!-- Bootstrap -->
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -41,8 +42,8 @@
 						data-toggle="dropdown" role="button" aria-haspopup="true"
 						aria-expanded="false">Opciones <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="/admin/complemento/"
-								th:href="@{/admin/complemento/}">Gestión de complementos</a></li>
+							<li><a href="/admin/comlemento/"
+								th:href="@{/admin/complemento/}">Gestión de complemetos</a></li>
 							<li><a href="/admin/cachimba/" th:href="@{/admin/cachimba/}">Gestión
 									de cachimbas</a></li>
 						</ul></li>
@@ -54,33 +55,45 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-offset-2 col-md-8">
-				<form method="post" action="#"
-					th:action="@{/admin/complemento/nueva/submit}"
-					th:object="${complemento}">
-					<h1>
-						<span th:text="${complemento.id} ? 'Editar' : 'Nueva'"></span>
-						complemento
-					</h1>
-					<input type="hidden" th:field="*{id}" id="id" />
-					<div class="form-group">
-						<label class="control-label" for="nombre">Nombre</label> <input type="text"
-							class="form-control" id="nombre" placeholder="Nombre"
-							required="required" th:field="*{nombre}">
+			<div class="col-md-4">
+				<img src="http://placehold.it/400x400" alt=""
+					th:src="${#strings.isEmpty(cachimba.imagen)} ? 'http://placehold.it/350x260' : ${producto.imagen}"
+					class="img-responsive" />
+			</div>
+			<div class="col-md-8">
+				<h1 class="cachimba-name" th:text=${cachimba.nombre}>Nombre del
+					producto</h1>
+				<div class="cachimba-price">
+					<div class="row">
+						<div class=col-md-4>
+						</div>
+							<div class="col-md-3 pvp-no-discounted">
+								<span th:text="${#numbers.formatCurrency(cachimba.precio)}">120€</span>
+							</div>
+							<div class="col-md-3 discount">
+							</div>
+						</th:block>
 					</div>
-					<div class="form-group">
-						<label class="control-label" for="imagen">URL de la imagen</label> <input type="url"
-							class="form-control" id="imagen" placeholder="http://..."
-							th:field="*{imagen}">
+				</div>
+				<div class="row">
+					<div class="detail-rating col-md-4">
+						<span th:each="i:${#numbers.sequence(1,5)}" class="glyphicon"
+							th:classappend="${i <= producto.getPuntuacionMedia()} ? 'glyphicon-star': 'glyphicon-star-empty'"></span>
 					</div>
-					<div class="form-group">
-						<label class="control-label" for="stock"> <input type="checkbox"
-							id="stock" value="true" th:field="*{stock}"> Es
-							stock
-						</label>
+
+					<div class="detail-rating col-md-4">
+						<p>
+							<span
+								th:text="${#numbers.formatDecimal(cachimba.getPuntuacionMedia(),1,1)}">4</span>/5
+						</p>
 					</div>
-					<button type="submit" class="btn btn-default">Enviar</button>
-				</form>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<h3>Características</h3>
+				<p th:text="${producto.descripcion}">Descripción</p>
 			</div>
 		</div>
 	</div>
@@ -90,7 +103,6 @@
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	
 
 </body>
 </html>
