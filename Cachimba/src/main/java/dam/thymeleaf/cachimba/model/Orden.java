@@ -1,12 +1,15 @@
 package dam.thymeleaf.cachimba.model;
 
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,7 +22,7 @@ public class Orden {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String numero;
-	private LocalDate fechaCreacion;
+	private Date fechaCreacion;
 	private LocalDate fechaRecibida;
 
 	private double total;
@@ -27,13 +30,13 @@ public class Orden {
 	@ManyToOne
 	private Usuario usuario;
 	
-	@OneToOne(mappedBy = "orden")
-	private DetalleOrden detalle;
+	@OneToMany(mappedBy = "orden")
+	private List<DetalleOrden> detalle;
 	
 	public Orden() {
 	}
 
-	public Orden(Integer id, String numero, LocalDate fechaCreacion,
+	public Orden(Integer id, String numero, Date fechaCreacion,
 			LocalDate fechaRecibida, double total, Usuario usuario) {
 		this.id = id;
 		this.numero = numero;
@@ -59,12 +62,12 @@ public class Orden {
 		this.numero = numero;
 	}
 
-	public LocalDate getFechaCreacion() {
+	public Date getFechaCreacion() {
 		return fechaCreacion;
 	}
 
-	public void setFechaCreacion(LocalDate fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
+	public void setFechaCreacion(Date fechaCreacion2) {
+		this.fechaCreacion = fechaCreacion2;
 	}
 
 	public LocalDate getFechaRecibida() {
@@ -90,13 +93,13 @@ public class Orden {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-
-	public DetalleOrden getDetalle() {
+	
+	public List<DetalleOrden> getDetalles() {
 		return detalle;
 	}
 
-	public void setDetalle(DetalleOrden detalle) {
-		this.detalle = detalle;
+	public void setDetalles(List<DetalleOrden> detalles) {
+		this.detalle = detalles;
 	}
 
 	@Override
