@@ -6,47 +6,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import dam.thymeleaf.cachimba.model.Cachimba;
-import dam.thymeleaf.cachimba.repositories.CachimbaRepository;
-import dam.thymeleaf.cachimba.services.CachimbaService;
-import dam.thymeleaf.cachimba.services.ComplementoService;
+import dam.thymeleaf.cachimba.model.Producto;
+import dam.thymeleaf.cachimba.services.ProductoService;
 
 
 @Controller
+@RequestMapping("/admin")
 public class MainController {
-
+	
 	@Autowired
-	private ComplementoService complementoService;
+	private ProductoService productoService;
 
-	@Autowired
-	private CachimbaService cachimbaService;
-
-	@GetMapping("/")
-	public String index(@RequestParam(name="idCategoria", required=false) Long idCategoria, Model model) {
-		List<Cachimba> cachimbas;
-
-		if(idCategoria==null) {
-			cachimbas = cachimbaService.obtenerProductosAleatorios(CachimbaRepository.PRODUCTOS_ALEATORIOS);
-		}else {
-			cachimbas = cachimbaService.findAllByCategoria(idCategoria);
-		}
-
-		model.addAttribute("categorias", complementoService.findAll());
-
-		model.addAttribute("productos", cachimbas);
-
-		return "index";
-	}
-	@GetMapping("/producto/{id}")
-	public String showDetails(@PathVariable("id") Long id, Model model) {
-		Cachimba cachimba = cachimbaService.findById(id);
-		if(cachimba!=null) {
-			model.addAttribute(cachimba);
-			return "detail";
-		}
-		return "redirect:/";
+	/**
+	 * Metodo para el inicio de la pagina
+	 * @param model: Objeto de tipo Model
+	 * @return: Devuelve la ruta a el archivo html de home
+	 */
+	//Para que me redireccione
+	@GetMapping("")
+	public String home(Model model) { 
+		
+		List<Producto> productos = productoService.findAll();
+		model.addAttribute("productos", productos);
+		
+		return "admin/home";	
 	}
 }
